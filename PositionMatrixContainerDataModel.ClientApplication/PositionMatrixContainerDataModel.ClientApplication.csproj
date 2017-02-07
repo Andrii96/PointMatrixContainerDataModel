@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AE795D75-6A0B-4C1B-B750-239A6118D8C5}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{6F6181B9-EEE8-4DC5-8ECB-FBCC6C196A25}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PositionMatrixContainerDataModel.Models</RootNamespace>
-    <AssemblyName>PositionMatrixContainerDataModel.Models</AssemblyName>
+    <RootNamespace>PositionMatrixContainerDataModel.ClientApplication</RootNamespace>
+    <AssemblyName>PositionMatrixContainerDataModel.ClientApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,9 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,28 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\DifferentContainersSizeException.cs" />
-    <Compile Include="Exceptions\DifferentDimensionTypeInMatrixException.cs" />
-    <Compile Include="Exceptions\DifferentDimensionTypeInPositionException.cs" />
-    <Compile Include="Exceptions\DifferentIndexedMatrixType.cs" />
-    <Compile Include="Exceptions\DifferentMatrixSizeException.cs" />
-    <Compile Include="Exceptions\DifferentNumberOfPointsIn3DMatrixPositions.cs" />
-    <Compile Include="Exceptions\NotNumericTypeException.cs" />
-    <Compile Include="Factory\PMCDataModelFactory.cs" />
-    <Compile Include="Models\Collection\BaseCollection.cs" />
-    <Compile Include="Models\Collection\Container.cs" />
-    <Compile Include="Models\Collection\Containers.cs" />
-    <Compile Include="Models\Collection\Matrix.cs" />
-    <Compile Include="Models\Collection\Position.cs" />
-    <Compile Include="Models\Helpers\NumericType.cs" />
-    <Compile Include="Models\Point\Point.cs" />
-    <Compile Include="Models\Point\Point1D.cs" />
-    <Compile Include="Models\Point\Point2D.cs" />
-    <Compile Include="Models\Point\Point3D.cs" />
-    <Compile Include="Models\Point\PointDimension.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PositionMatrixContainerDataModel.Models\PositionMatrixContainerDataModel.Models.csproj">
+      <Project>{ae795d75-6a0b-4c1b-b750-239a6118d8c5}</Project>
+      <Name>PositionMatrixContainerDataModel.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

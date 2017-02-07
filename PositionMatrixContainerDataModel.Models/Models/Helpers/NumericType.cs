@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PositionMatrixContainerDataModel.Models.Exceptions;
 
 namespace PositionMatrixContainerDataModel.Models.Models
 {
@@ -11,10 +12,9 @@ namespace PositionMatrixContainerDataModel.Models.Models
         #region Constructor
         protected NumericType()
         {
-            //TODO Create custom exception and throw it if the type is not numeric
-            if (!IsNumericType(typeof(T)))
+            if (!CheckType(typeof(T)))
             {
-                
+                throw new NotNumericTypeException(typeof(T));
             }
         }
         #endregion
@@ -31,6 +31,10 @@ namespace PositionMatrixContainerDataModel.Models.Models
                    Type.GetTypeCode(type) == TypeCode.UInt64;
         }
 
+        private bool CheckType(Type type)
+        {
+            return IsNumericType(type.IsGenericType ? type.GenericTypeArguments.First() : type);
+        }
 
         #endregion
     }

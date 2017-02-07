@@ -3,26 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PositionMatrixContainerDataModel.Models.Exceptions;
 
 namespace PositionMatrixContainerDataModel.Models.Models.Collection
 {
     public class Matrix<T>:BaseCollection<Position<T>>
     {
         #region Constructor
-
+        /// <summary>
+        /// Default constructor. Initializes matrix instance.
+        /// </summary>
         public Matrix() : base(){ }
 
-        //TODO Check types and throw exception when types are incorrect
+        /// <summary>
+        /// Iniitializes matrix instance with position sequence
+        /// 
+        /// Exceptions:
+        /// DifferentDimensionTypeInPositionException,
+        /// DifferentNumberOfPointsIn3DMatrixPositions
+        /// </summary>
+        /// <param name="positions"></param>
         public Matrix(IEnumerable<Position<T>> positions)
         {
             if (!CheckMatrixType(positions))
             {
-                //Exception
+                throw new DifferentDimensionTypeInPositionException(positions.First().Dimension);
             }
 
             if (positions.First().Dimension == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions))
             {
-                //Exception
+                throw new DifferentNumberOfPointsIn3DMatrixPositions(positions.First().Count());
             }
 
              base.Fill(positions);
@@ -30,21 +40,32 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         #endregion
 
         #region Methods
-        //TODO Throw exception
+
+        /// <summary>
+        /// Adds new position to matrix.
+        /// 
+        /// Exceptions:
+        /// DifferentDimensionTypeInMatrixException,
+        /// DifferentNumberOfPointsIn3DMatrixPositions
+        /// </summary>
+        /// <param name="position">position for adding</param>
         public override void Add(Position<T> position)
         {         
             if (!CheckPositionType(position))
             {
-                //Exception
-                return;
+                throw new DifferentDimensionTypeInMatrixException(position.Dimension);
             }
             if (position.Dimension == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
             {
-                //Exception
+                throw new DifferentNumberOfPointsIn3DMatrixPositions(Elements.First().Count());
             }
             base.Add(position);
         }
 
+        /// <summary>
+        /// Represents matrix as string
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder("");
@@ -69,7 +90,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         private bool CheckPositionType(Position<T> position)
         {
             var positionType = position.Dimension;
-            return Elements.First().Dimension == positionType;
+            return Elements.Count == 0 || Elements.First().Dimension == positionType;
         }
 
         private bool Check3DMatrixNumberPoint(IEnumerable<Position<T>> positions)
@@ -81,7 +102,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         private bool Check3DMatrixNumberPoint(Position<T> position)
         {
             var pointNumber = Elements.FirstOrDefault()?.Count();
-            return position.Count() == pointNumber;
+            return Elements.Count == 0 || position.Count() == pointNumber;
         }
 
         #endregion

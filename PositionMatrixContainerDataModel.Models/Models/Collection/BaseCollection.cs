@@ -34,6 +34,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             Elements = elements.ToList();
         }
 
+        /// <summary>
+        /// Adds new element to sequence
+        /// </summary>
+        /// <param name="element">Element for adding</param>
         public virtual void Add(T element)
         {
             if (element == null)
@@ -43,6 +47,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             Elements.Add(element);
         }
 
+        /// <summary>
+        /// Gets element of the sequence via index
+        /// </summary>
+        /// <param name="index">element index</param>
+        /// <returns>Element with proper index</returns>
         public T this[int index] => Elements.ElementAt(index);
 
         IEnumerator IEnumerable.GetEnumerator()
