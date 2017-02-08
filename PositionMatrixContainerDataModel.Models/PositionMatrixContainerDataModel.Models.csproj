@@ -45,9 +45,9 @@
     <Compile Include="Exceptions\DifferentContainersSizeException.cs" />
     <Compile Include="Exceptions\DifferentDimensionTypeInMatrixException.cs" />
     <Compile Include="Exceptions\DifferentDimensionTypeInPositionException.cs" />
-    <Compile Include="Exceptions\DifferentIndexedMatrixType.cs" />
+    <Compile Include="Exceptions\DifferentIndexedMatrixTypeException.cs" />
     <Compile Include="Exceptions\DifferentMatrixSizeException.cs" />
-    <Compile Include="Exceptions\DifferentNumberOfPointsIn3DMatrixPositions.cs" />
+    <Compile Include="Exceptions\DifferentNumberOfPointsInIndexed3DMatrixPositionsException.cs" />
     <Compile Include="Exceptions\NotNumericTypeException.cs" />
     <Compile Include="Factory\PMCDataModelFactory.cs" />
     <Compile Include="Models\Collection\BaseCollection.cs" />

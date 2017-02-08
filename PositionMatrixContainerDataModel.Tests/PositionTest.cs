@@ -45,5 +45,45 @@ namespace PositionMatrixContainerDataModel.Tests
         {
             Position<string> position = new Position<string>();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof (DifferentDimensionTypeInPositionException))]
+        public void CreatePosition_ParametrizedConstructorWithSecuenceOfPoints_CreationFailed()
+        {
+            List<Point<int>> points = new List<Point<int>> {new Point1D<int>(1), new Point1D<int>(2)};
+            points.Add(new Point2D<int>(2,3));
+
+            new Position<int>(points);
+        }
+
+        [TestMethod]
+        public void Add_AddingPointToPosition_PositionAdded()
+        {
+            List<Point<int>> points = new List<Point<int>> { new Point1D<int>(1), new Point1D<int>(2) };
+            var position = new Position<int>(points);
+            position.Add(new Point1D<int>(3));
+
+            Assert.IsTrue(position.Count() == 3);         
+            Assert.IsTrue((position[2] as Point1D<int>).X == 3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DifferentDimensionTypeInPositionException))]
+        public void Add_AddingPointWithDifferentType_ExceptionThrown()
+        {
+            List<Point<int>> points = new List<Point<int>> { new Point1D<int>(1), new Point1D<int>(2) };
+            var position = new Position<int>(points);
+            position.Add(new Point2D<int>(3,4));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof (ArgumentNullException))]
+        public void Add_AddNullPoint_ExceptionThrown()
+        {
+            var position = new Position<int>(PointDimension.Point1D);
+            Point1D<int> point = null;
+            position.Add(point);
+        }
+
     }
 }

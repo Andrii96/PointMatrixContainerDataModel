@@ -68,12 +68,15 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         /// <param name="point">point for adding</param>
         public override void Add(Point<T> point)
         {
+            if (point == null)
+            {
+                throw new ArgumentNullException();
+            }
             if (!CheckDimensionType(point))
             {
                 throw new DifferentDimensionTypeInPositionException(point.PointType);
             }
-            base.Add(point);
-            
+            base.Add(point);           
         }
 
         /// <summary>

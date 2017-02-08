@@ -27,12 +27,12 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         {
             if (!CheckMatrixType(positions))
             {
-                throw new DifferentDimensionTypeInPositionException(positions.First().Dimension);
+                throw new DifferentDimensionTypeInMatrixException(positions.First().Dimension);
             }
 
             if (positions.First().Dimension == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions))
             {
-                throw new DifferentNumberOfPointsIn3DMatrixPositions(positions.First().Count());
+                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(positions.First().Count());
             }
 
              base.Fill(positions);
@@ -50,14 +50,18 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         /// </summary>
         /// <param name="position">position for adding</param>
         public override void Add(Position<T> position)
-        {         
+        {
+            if (position == null)
+            {
+                throw new ArgumentNullException();
+            }      
             if (!CheckPositionType(position))
             {
                 throw new DifferentDimensionTypeInMatrixException(position.Dimension);
             }
             if (position.Dimension == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
             {
-                throw new DifferentNumberOfPointsIn3DMatrixPositions(Elements.First().Count());
+                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(Elements.First().Count());
             }
             base.Add(position);
         }

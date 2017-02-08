@@ -1,27 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PositionMatrixContainerDataModel.Models.Exceptions
 {
-    public class NotNumericTypeException:Exception
+    [Serializable]
+    public class NotNumericTypeException:ApplicationException
     {
         #region Properties
         public Type Type { get; set; }
-
-        public override string Message { get; }
         #endregion
 
         #region Constructor
 
-        public NotNumericTypeException(Type type)
-        {
-            Type = type;
+        public NotNumericTypeException() : base() { }
 
-            Message = string.Format("Only numeric types allowed. {0} is not numeric type.", type.Name);
+        public NotNumericTypeException(string message) : base(message) { }
+
+        public NotNumericTypeException(string message,Exception innerException) : base(message, innerException) { }
+
+        public NotNumericTypeException(Type type):this(string.Format("Only numeric types allowed. {0} is not numeric type.", type.Name))
+        {
+            Type = type;            
         }
+
+        protected NotNumericTypeException(SerializationInfo info,StreamingContext context) : base(info, context) { }
+
         #endregion
     }
 }

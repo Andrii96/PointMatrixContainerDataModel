@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PositionMatrixContainerDataModel.Models.Exceptions
 {
-    public class DifferentMatrixSizeException:Exception
+    [Serializable]
+    public class DifferentMatrixSizeException:ApplicationException
     {
         #region Properties
         public int MatrixSize { get; set; }
-
-        public override string Message { get; }
-
         #endregion
 
         #region Constructor
 
-        public DifferentMatrixSizeException(int matrixSize)
+        public DifferentMatrixSizeException() : base() { }
+
+        public DifferentMatrixSizeException(string message) : base(message) { }
+
+        public DifferentMatrixSizeException(string message, Exception innerException):base(message,innerException) { }
+
+        public DifferentMatrixSizeException(int matrixSize):this(string.Format("All matrices in container should have the same length - {0} elements.", matrixSize))
         {
             MatrixSize = matrixSize;
-            Message = string.Format("All matrices in container should have the same length - {0} elements.",MatrixSize);
         }
+
+        protected DifferentMatrixSizeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         #endregion
     }
 }

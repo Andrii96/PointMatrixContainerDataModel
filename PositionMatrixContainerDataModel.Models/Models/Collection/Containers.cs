@@ -28,6 +28,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         /// <param name="containers">Containers sequence</param>
         public Containers(IEnumerable<Container<T>> containers)
         {
+            if (containers == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (CheckContainersContainerMatrixSize(containers) && CheckContainers(containers) &&
                 CheckTypeOfEachIndexedMatrix(containers) && CheckNumberOfDataPointsIn3DMatrix(containers))
             {
@@ -51,6 +56,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         /// <param name="container">Container for adding</param>
         public override void Add(Container<T> container)
         {
+            if (container == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (Elements.Count > 0)
             {
                 if (CheckContainersContainerMatrixSize(container) && CheckContainers(container) &&
@@ -167,7 +177,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 var type2 = secondContainer.Matrixes.ElementAt(i).First().Dimension;
                 if ( type1!=type2)
                 {
-                    throw new DifferentIndexedMatrixType(type1,type2);
+                    throw new DifferentIndexedMatrixTypeException(type1,type2);
                 }
             }
             return true;
@@ -193,7 +203,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                     if (GetAmountOfPointsFor3DMatrix(matrix1) !=
                         GetAmountOfPointsFor3DMatrix(secondContainer.Matrixes.ElementAt(i)))
                     {
-                        throw new DifferentNumberOfPointsIn3DMatrixPositions(GetAmountOfPointsFor3DMatrix(matrix1));
+                        throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(GetAmountOfPointsFor3DMatrix(matrix1));
                     }
                 }
             }

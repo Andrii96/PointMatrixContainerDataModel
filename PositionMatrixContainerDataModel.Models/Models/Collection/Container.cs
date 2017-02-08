@@ -49,6 +49,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         /// <param name="matrix">matrix for adding to container</param>
         public override void Add(Matrix<T> matrix)
         {
+            if (matrix == null)
+            {
+                throw new ArgumentNullException();
+            }
             if (!CheckContainer(matrix))
             {
                 throw new DifferentMatrixSizeException(Elements.First().Count());
