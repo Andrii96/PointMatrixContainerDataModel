@@ -16,11 +16,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         public Container(IEnumerable<Matrix<T>> matrices)
         {
-            if (!CheckContainer(matrices))
-            {
-                throw new DifferentMatrixSizeException(matrices.First().Count());
-            }
-            base.AddRange(matrices);
+            this.AddRange(matrices);
         }
 
         #endregion
@@ -33,11 +29,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 throw new ArgumentNullException();
             }
-            if (!CheckContainer(matrix))
+            if (ValidateSingleValue(matrix))
             {
-                throw new DifferentMatrixSizeException();
-            }
-            base.Add(matrix);
+                base.Add(matrix);
+            }           
         }
 
         public new void AddRange(IEnumerable<Matrix<T>> matrices)
@@ -47,21 +42,15 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 throw new ArgumentNullException();
             }
 
-            if (!CheckContainer(matrices))
+            if (ValidateSecuence(matrices))
+            {
+                base.AddRange(matrices);
+            }
+            else
             {
                 throw new DifferentMatrixSizeException();
             }
-
-            if (Count > 0)
-            {
-                int number = matrices.First().Count;
-
-                if (this.Any(m => m.Count != number))
-                {
-                    throw new DifferentMatrixSizeException();
-                }
-            }
-            base.AddRange(matrices);
+           
         }
 
         public new void Insert(int index, Matrix<T> matrix)
@@ -70,11 +59,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 throw new ArgumentNullException();
             }
-            if (!CheckContainer(matrix))
+            if (ValidateSingleValue(matrix))
             {
-                throw new DifferentMatrixSizeException();
+                base.Insert(index,matrix);
             }
-            base.Insert(index,matrix);
         }
 
         public new void InsertRange(int index, IEnumerable<Matrix<T>> matrices)
@@ -84,16 +72,14 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 throw new DifferentMatrixSizeException();
             }
 
-            if (Count > 0)
+            if (ValidateSecuence(matrices))
             {
-                int number = matrices.First().Count;
-
-                if (this.Any(m => m.Count != number))
-                {
-                    throw new DifferentMatrixSizeException();
-                }
+                base.InsertRange(index,matrices);
             }
-            base.InsertRange(index,matrices);
+            else
+            {
+                throw new DifferentMatrixSizeException();
+            }
         }
 
         public new Matrix<T> this[int index] => this[index];
@@ -124,6 +110,26 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         {
             var matrixSize = this.FirstOrDefault()?.Count();
             return Count == 0 || matrix.Count() == matrixSize;
+        }
+
+        private bool ValidateSingleValue(Matrix<T> matrix)
+        {
+            if (!CheckContainer(matrix))
+            {
+                throw new DifferentMatrixSizeException();
+            }
+            return true;
+        }
+
+        private bool ValidateSecuence(IEnumerable<Matrix<T>> matrices)
+        {
+            if (!CheckContainer(matrices))
+            {
+                throw new DifferentMatrixSizeException();
+            }
+
+            return Count == 0 || this.First().Count() == matrices.First().Count();
+
         }
 
         #endregion

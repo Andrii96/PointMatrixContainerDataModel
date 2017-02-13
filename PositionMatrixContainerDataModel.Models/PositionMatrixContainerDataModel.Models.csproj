@@ -50,7 +50,6 @@
     <Compile Include="Exceptions\DifferentNumberOfPointsInIndexed3DMatrixPositionsException.cs" />
     <Compile Include="Exceptions\NotNumericTypeException.cs" />
     <Compile Include="Factory\PMCDataModelFactory.cs" />
-    <Compile Include="Models\Collection\BaseCollection.cs" />
     <Compile Include="Models\Collection\Container.cs" />
     <Compile Include="Models\Collection\Containers.cs" />
     <Compile Include="Models\Collection\Matrix.cs" />

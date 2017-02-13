@@ -15,17 +15,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         public Matrix(IEnumerable<Position<T>> positions)
         {
-            if (!CheckMatrixType(positions))
-            {
-                throw new DifferentDimensionTypeInMatrixException(positions.First().PositionType);
-            }
-
-            if (positions.First().PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions))
-            {
-                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(positions.First().Count());
-            }
-
-            base.AddRange(positions);            
+            this.AddRange(positions);            
         }
 
         #endregion
@@ -38,16 +28,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 throw new ArgumentNullException();
             }
-            if (!CheckPositionType(position))
-            {
-                throw new DifferentDimensionTypeInMatrixException(position.PositionType);
-            }
-            if (position.PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
-            {
-                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
-            }
 
-            base.Add(position);
+            if (ValidateSingleValue(position))
+            {
+                base.Add(position);
+            }            
         }
 
         public new void AddRange(IEnumerable<Position<T>> positions)
@@ -57,17 +42,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 throw new DifferentDimensionTypeInMatrixException();
             }
 
-            if (Count > 0)
+            if (ValidateSequence(positions))
             {
-                var positionType = positions.First().PositionType;
-
-                if (this.Any(p => p.PositionType != positionType))
-                {
-                    throw new DifferentDimensionTypeInPositionException();
-                }
+                base.AddRange(positions);
             }
-
-            base.AddRange(positions);
         }
 
         public new void Insert(int index, Position<T> position)
@@ -76,16 +54,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 throw new ArgumentNullException();
             }
-            if (!CheckPositionType(position))
+            if (ValidateSingleValue(position))
             {
-                throw new DifferentDimensionTypeInMatrixException(position.PositionType);
-            }
-            if (position.PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
-            {
-                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
-            }
-
-            base.Insert(index,position);
+                base.Insert(index, position);
+            }           
         }
 
         public new void InsertRange(int index, IEnumerable<Position<T>> positions)
@@ -95,17 +67,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 throw new DifferentDimensionTypeInMatrixException();
             }
 
-            if (Count > 0)
+            if (ValidateSequence(positions))
             {
-                var positionType = positions.First().PositionType;
-
-                if (this.Any(p => p.PositionType != positionType))
-                {
-                    throw new DifferentDimensionTypeInPositionException();
-                }
-            }
-
-            base.InsertRange(index,positions);
+                base.InsertRange(index, positions);
+            }           
         }
 
         public new Position<T> this[int index] => this[index]; 
@@ -147,6 +112,38 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         {
             var pointNumber = this.FirstOrDefault()?.Count();
             return Count == 0 || position.Count() == pointNumber;
+        }
+
+        private bool ValidateSingleValue(Position<T> position)
+        {
+            if (!CheckPositionType(position))
+            {
+                throw new DifferentDimensionTypeInMatrixException(position.PositionType);
+            }
+            if (position.PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
+            {
+                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
+            }
+            return true;
+        }
+
+        private bool ValidateSequence(IEnumerable<Position<T>> positions)
+        {
+            if (!CheckMatrixType(positions))
+            {
+                throw new DifferentDimensionTypeInMatrixException();
+            }
+            if (!CheckPositionType(positions.First()))
+            {
+                throw new DifferentDimensionTypeInPositionException();
+            }
+
+            if (positions.First().PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions.First()))
+            {
+                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
+            }
+
+            return true;
         }
 
         #endregion

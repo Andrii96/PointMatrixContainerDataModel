@@ -19,12 +19,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 throw new ArgumentNullException();
             }
-
-            if (CheckContainersContainerMatrixSize(containers) && CheckContainers(containers) &&
-                CheckTypeOfEachIndexedMatrix(containers) && CheckNumberOfDataPointsIn3DMatrix(containers))
-            {
-                this.AddRange(containers);
-            }
+            this.AddRange(containers);
         }
 
         #endregion
@@ -38,17 +33,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 throw new ArgumentNullException();
             }
 
-            if (Count > 0)
-            {
-                if (CheckContainersContainerMatrixSize(container) && CheckContainers(container) &&
-                    CheckTypeOfIndexedMatrix(container, this.Last()) &&
-                    CheckNumberOfDataPointsIn3DMatrix(container, this.Last()))
-                {
-                    base.Add(container);
-                    return;
-                }
-            }
-            else
+            if (ValidateSingleValue(container))
             {
                 base.Add(container);
             }
@@ -56,27 +41,33 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         public new void AddRange(IEnumerable<Container<T>> containersCollection)
         {
-            if (CheckContainersContainerMatrixSize(containersCollection) && CheckContainers(containersCollection) &&
-                CheckTypeOfEachIndexedMatrix(containersCollection) &&
-                CheckNumberOfDataPointsIn3DMatrix(containersCollection))
+            if (ValidateSequence(containersCollection))
             {
-                if (Count == 0)
-                {
-                    base.AddRange(containersCollection);
-                }
+                base.AddRange(containersCollection);
             }
-                
-            
+                      
         }
 
         public new void Insert(int index, Container<T> container)
         {
-            
+            if (container == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (ValidateSingleValue(container))
+            {
+                base.Insert(index,container);
+            }
+                    
         }
 
         public new void InsertRange(int index, IEnumerable<Container<T>> containersCollection)
         {
-            
+            if (ValidateSequence(containersCollection))
+            {
+                base.InsertRange(index,containersCollection);
+            }
         }
 
         public new Container<T> this[int index] => this[index];
@@ -205,6 +196,30 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         private int GetAmountOfPointsFor3DMatrix(Matrix<T> matrix)
         {
             return matrix.First().Count();
+        }
+
+        private bool ValidateSingleValue(Container<T> container)
+        {
+            return Count == 0 || (CheckContainersContainerMatrixSize(container) && CheckContainers(container) &&
+                                  CheckTypeOfIndexedMatrix(container, this.Last()) &&
+                                  CheckNumberOfDataPointsIn3DMatrix(container, this.Last()));
+        }
+
+        private bool ValidateSequence(IEnumerable<Container<T>> containers)
+        {
+            var containersCollection = containers.ToList();
+
+            if (CheckContainersContainerMatrixSize(containersCollection) && CheckContainers(containersCollection) &&
+                CheckTypeOfEachIndexedMatrix(containersCollection) &&
+                CheckNumberOfDataPointsIn3DMatrix(containersCollection))
+            {
+
+                return Count == 0 || (CheckContainersContainerMatrixSize(containersCollection.First()) &&
+                                      CheckContainers(containersCollection.First()) &&
+                                      CheckTypeOfIndexedMatrix(this.First(), containersCollection.First()) &&
+                                      CheckNumberOfDataPointsIn3DMatrix(this.First(), containersCollection.First()));
+            }
+            return false;
         }
 
         #endregion
