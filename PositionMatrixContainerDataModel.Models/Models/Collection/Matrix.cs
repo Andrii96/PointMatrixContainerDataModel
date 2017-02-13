@@ -7,73 +7,113 @@ using PositionMatrixContainerDataModel.Models.Exceptions;
 
 namespace PositionMatrixContainerDataModel.Models.Models.Collection
 {
-    public class Matrix<T>:BaseCollection<Position<T>>
+    public class Matrix<T> : List<Position<T>> where T : struct
     {
         #region Constructor
-        /// <summary>
-        /// Default constructor. Initializes matrix instance.
-        /// </summary>
-        public Matrix() : base(){ }
 
-        /// <summary>
-        /// Iniitializes matrix instance with position sequence
-        /// 
-        /// Exceptions:
-        /// DifferentDimensionTypeInPositionException,
-        /// DifferentNumberOfPointsIn3DMatrixPositions
-        /// </summary>
-        /// <param name="positions"></param>
+        public Matrix() : base() {}
+
         public Matrix(IEnumerable<Position<T>> positions)
         {
             if (!CheckMatrixType(positions))
             {
-                throw new DifferentDimensionTypeInMatrixException(positions.First().Dimension);
+                throw new DifferentDimensionTypeInMatrixException(positions.First().PositionType);
             }
 
-            if (positions.First().Dimension == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions))
+            if (positions.First().PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions))
             {
                 throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(positions.First().Count());
             }
 
-             base.Fill(positions);
+            base.AddRange(positions);            
         }
+
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Adds new position to matrix.
-        /// 
-        /// Exceptions:
-        /// DifferentDimensionTypeInMatrixException,
-        /// DifferentNumberOfPointsIn3DMatrixPositions
-        /// </summary>
-        /// <param name="position">position for adding</param>
-        public override void Add(Position<T> position)
+        public new void Add(Position<T> position)
         {
             if (position == null)
             {
                 throw new ArgumentNullException();
-            }      
+            }
             if (!CheckPositionType(position))
             {
-                throw new DifferentDimensionTypeInMatrixException(position.Dimension);
+                throw new DifferentDimensionTypeInMatrixException(position.PositionType);
             }
-            if (position.Dimension == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
+            if (position.PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
             {
-                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(Elements.First().Count());
+                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
             }
+
             base.Add(position);
         }
 
-        /// <summary>
-        /// Represents matrix as string
-        /// </summary>
-        /// <returns></returns>
+        public new void AddRange(IEnumerable<Position<T>> positions)
+        {
+            if (!CheckMatrixType(positions))
+            {
+                throw new DifferentDimensionTypeInMatrixException();
+            }
+
+            if (Count > 0)
+            {
+                var positionType = positions.First().PositionType;
+
+                if (this.Any(p => p.PositionType != positionType))
+                {
+                    throw new DifferentDimensionTypeInPositionException();
+                }
+            }
+
+            base.AddRange(positions);
+        }
+
+        public new void Insert(int index, Position<T> position)
+        {
+            if (position == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (!CheckPositionType(position))
+            {
+                throw new DifferentDimensionTypeInMatrixException(position.PositionType);
+            }
+            if (position.PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(position))
+            {
+                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
+            }
+
+            base.Insert(index,position);
+        }
+
+        public new void InsertRange(int index, IEnumerable<Position<T>> positions)
+        {
+            if (!CheckMatrixType(positions))
+            {
+                throw new DifferentDimensionTypeInMatrixException();
+            }
+
+            if (Count > 0)
+            {
+                var positionType = positions.First().PositionType;
+
+                if (this.Any(p => p.PositionType != positionType))
+                {
+                    throw new DifferentDimensionTypeInPositionException();
+                }
+            }
+
+            base.InsertRange(index,positions);
+        }
+
+        public new Position<T> this[int index] => this[index]; 
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder("");
-            base.Elements.ForEach(p=> 
+            this.ForEach(p =>
             {
                 sb.Append(p.ToString());
                 sb.Append(Environment.NewLine);
@@ -87,14 +127,14 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         private bool CheckMatrixType(IEnumerable<Position<T>> positions)
         {
-            var positionType = positions.FirstOrDefault()?.Dimension;
-            return positions.All(p => p.Dimension == positionType);
+            var positionType = positions.FirstOrDefault()?.PositionType;
+            return positions.All(p => p.PositionType == positionType);
         }
 
         private bool CheckPositionType(Position<T> position)
         {
-            var positionType = position.Dimension;
-            return Elements.Count == 0 || Elements.First().Dimension == positionType;
+            var positionType = position.PositionType;
+            return Count == 0 || this.First().PositionType == positionType;
         }
 
         private bool Check3DMatrixNumberPoint(IEnumerable<Position<T>> positions)
@@ -105,12 +145,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         private bool Check3DMatrixNumberPoint(Position<T> position)
         {
-            var pointNumber = Elements.FirstOrDefault()?.Count();
-            return Elements.Count == 0 || position.Count() == pointNumber;
+            var pointNumber = this.FirstOrDefault()?.Count();
+            return Count == 0 || position.Count() == pointNumber;
         }
 
         #endregion
-
-
     }
 }
+

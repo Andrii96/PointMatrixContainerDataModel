@@ -55,6 +55,7 @@
     <Compile Include="Models\Collection\Containers.cs" />
     <Compile Include="Models\Collection\Matrix.cs" />
     <Compile Include="Models\Collection\Position.cs" />
+    <Compile Include="Models\Helpers\CodeHelper.cs" />
     <Compile Include="Models\Helpers\NumericType.cs" />
     <Compile Include="Models\Point\Point.cs" />
     <Compile Include="Models\Point\Point1D.cs" />

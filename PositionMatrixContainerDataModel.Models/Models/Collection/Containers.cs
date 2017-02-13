@@ -7,25 +7,12 @@ using System;
 
 namespace PositionMatrixContainerDataModel.Models.Models.Collection
 {
-    public class Containers<T>:BaseCollection<Container<T>>
+    public class Containers<T> : List<Container<T>> where T : struct
     {
         #region Constructor
 
-        /// <summary>
-        /// Default constructor. Initializes containers collection
-        /// </summary>
-        public Containers():base() {}
+        public Containers() : base() { }
 
-        /// <summary>
-        /// Initializes containers collection with container sequence.
-        /// 
-        /// Exceptions:
-        /// DifferentMatrixSizeException,
-        /// DifferentContainersSizeException,
-        /// DifferentIndexedMatrixType,
-        /// DifferentNumberOfPointsIn3DMatrixPositions
-        /// </summary>
-        /// <param name="containers">Containers sequence</param>
         public Containers(IEnumerable<Container<T>> containers)
         {
             if (containers == null)
@@ -36,7 +23,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             if (CheckContainersContainerMatrixSize(containers) && CheckContainers(containers) &&
                 CheckTypeOfEachIndexedMatrix(containers) && CheckNumberOfDataPointsIn3DMatrix(containers))
             {
-                Fill(containers);
+                this.AddRange(containers);
             }
         }
 
@@ -44,28 +31,18 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         #region Methods
 
-        /// <summary>
-        /// Adds new container to containers collection
-        /// 
-        /// Exceptions:
-        /// DifferentMatrixSizeException,
-        /// DifferentContainersSizeException,
-        /// DifferentIndexedMatrixType,
-        /// DifferentNumberOfPointsIn3DMatrixPositions
-        /// </summary>
-        /// <param name="container">Container for adding</param>
-        public override void Add(Container<T> container)
+        public new void Add(Container<T> container)
         {
             if (container == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if (Elements.Count > 0)
+            if (Count > 0)
             {
                 if (CheckContainersContainerMatrixSize(container) && CheckContainers(container) &&
-                    CheckTypeOfIndexedMatrix(container, Elements.Last()) &&
-                    CheckNumberOfDataPointsIn3DMatrix(container, Elements.Last()))
+                    CheckTypeOfIndexedMatrix(container, this.Last()) &&
+                    CheckNumberOfDataPointsIn3DMatrix(container, this.Last()))
                 {
                     base.Add(container);
                     return;
@@ -75,18 +52,40 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 base.Add(container);
             }
+        }
+
+        public new void AddRange(IEnumerable<Container<T>> containersCollection)
+        {
+            if (CheckContainersContainerMatrixSize(containersCollection) && CheckContainers(containersCollection) &&
+                CheckTypeOfEachIndexedMatrix(containersCollection) &&
+                CheckNumberOfDataPointsIn3DMatrix(containersCollection))
+            {
+                if (Count == 0)
+                {
+                    base.AddRange(containersCollection);
+                }
+            }
+                
             
         }
 
-        /// <summary>
-        /// Represents containers collection as string
-        /// </summary>
-        /// <returns></returns>
+        public new void Insert(int index, Container<T> container)
+        {
+            
+        }
+
+        public new void InsertRange(int index, IEnumerable<Container<T>> containersCollection)
+        {
+            
+        }
+
+        public new Container<T> this[int index] => this[index];
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(" ");
             int index = 0;
-            Elements.ForEach(c =>
+            this.ForEach(c =>
             {
                 sb.Append($"Container {++index}: {c.ToString()} {Environment.NewLine}");
             });
@@ -100,50 +99,45 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         private bool CheckContainersContainerMatrixSize(IEnumerable<Container<T>> containers)
         {
             var positionNumberInMatrix = containers.FirstOrDefault()?
-                                                 .Matrixes
                                                  .First()
                                                  .Count();
             if (positionNumberInMatrix != null)
             {
                 foreach (var container in containers)
                 {
-                    if (container.Matrixes.Any(matrix => matrix.Count() != positionNumberInMatrix))
+                    if (container.Any(matrix => matrix.Count() != positionNumberInMatrix))
                     {
                         throw new DifferentMatrixSizeException((int)positionNumberInMatrix);
                     }
                 }
             }
-            
+
             return true;
         }
 
         private bool CheckContainersContainerMatrixSize(Container<T> container)
         {
-            var positionNumberInMatrix = base.Elements.FirstOrDefault()?
-                                                      .Matrixes
+            var positionNumberInMatrix = this.FirstOrDefault()?
                                                       .First()
                                                       .Count();
             if (positionNumberInMatrix != null)
             {
-                if (container.Matrixes
-                            .FirstOrDefault()?
+                if (container.FirstOrDefault()?
                             .Count() != positionNumberInMatrix)
                 {
                     throw new DifferentMatrixSizeException((int)positionNumberInMatrix);
                 }
             }
-           
+
             return true;
         }
 
         private bool CheckContainers(IEnumerable<Container<T>> containers)
         {
-            var matrixNumber = containers.FirstOrDefault()?
-                                         .Matrixes
-                                         .Count();
+            var matrixNumber = containers.FirstOrDefault()?.Count();
             if (matrixNumber != null)
             {
-                if (!containers.All(c => c.Matrixes.Count() == matrixNumber))
+                if (!containers.All(c => c.Count() == matrixNumber))
                 {
                     throw new DifferentContainersSizeException((int)matrixNumber);
                 }
@@ -154,36 +148,33 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         private bool CheckContainers(Container<T> container)
         {
-            var matrixNumber = base.Elements.FirstOrDefault()?
-                                            .Matrixes
-                                            .Count();
+            var matrixNumber = this.FirstOrDefault()?.Count();
             if (matrixNumber != null)
             {
-                if (container.Matrixes.Count() != matrixNumber)
+                if (container.Count() != matrixNumber)
                 {
                     throw new DifferentContainersSizeException((int)matrixNumber);
                 }
             }
 
             return true;
-
         }
 
         private bool CheckTypeOfIndexedMatrix(Container<T> firstContainer, Container<T> secondContainer)
         {
-            for (int i = 0; i < firstContainer.Matrixes.Count(); i++)
+            for (int i = 0; i < firstContainer.Count(); i++)
             {
-                var type1 = firstContainer.Matrixes.ElementAt(i).First().Dimension;
-                var type2 = secondContainer.Matrixes.ElementAt(i).First().Dimension;
-                if ( type1!=type2)
+                var type1 = firstContainer[i].First().PositionType;
+                var type2 = secondContainer[i].First().PositionType;
+                if (type1 != type2)
                 {
-                    throw new DifferentIndexedMatrixTypeException(type1,type2);
+                    throw new DifferentIndexedMatrixTypeException(type1, type2);
                 }
             }
             return true;
         }
 
-        private bool CheckTypeOfEachIndexedMatrix(IEnumerable<Container<T>> containers )
+        private bool CheckTypeOfEachIndexedMatrix(IEnumerable<Container<T>> containers)
         {
             return containers.All(c => CheckTypeOfIndexedMatrix(c, containers.First()));
         }
@@ -195,13 +186,13 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         private bool CheckNumberOfDataPointsIn3DMatrix(Container<T> firstContainer, Container<T> secondContainer)
         {
-            for (int i = 0; i < firstContainer.Matrixes.Count(); i++)
+            for (int i = 0; i < firstContainer.Count(); i++)
             {
-                var matrix1 = firstContainer.Matrixes.ElementAt(i);
-                if (matrix1.First().Dimension == PointDimension.Point3D)
+                var matrix1 = firstContainer.ElementAt(i);
+                if (matrix1.First().PositionType == PointDimension.Point3D)
                 {
                     if (GetAmountOfPointsFor3DMatrix(matrix1) !=
-                        GetAmountOfPointsFor3DMatrix(secondContainer.Matrixes.ElementAt(i)))
+                        GetAmountOfPointsFor3DMatrix(secondContainer[i]))
                     {
                         throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException(GetAmountOfPointsFor3DMatrix(matrix1));
                     }

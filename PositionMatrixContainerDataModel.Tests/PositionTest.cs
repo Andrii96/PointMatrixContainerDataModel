@@ -12,76 +12,62 @@ namespace PositionMatrixContainerDataModel.Tests
     public class PositionTest
     {
         [TestMethod]
-        public void CreatePosition_DefaultConstructor_PositionCreated()
-        {
-            Position<int> position = new Position<int>();
-
-            Assert.IsNotNull(position);
-        }
-
-        [TestMethod]
         public void CreateEmptyPosition_ParametrizedConstructor_PositionCreated()
         {
             Position<int> position = new Position<int>(PointDimension.Point3D);
 
             Assert.IsNotNull(position);
-            Assert.IsTrue(position.Dimension == PointDimension.Point3D);
+            Assert.IsTrue(position.PositionType == PointDimension.Point3D);
         }
 
         [TestMethod]
         public void CreatePositionFromPointSequence_PositionCreated()
         {
-            List<Point<int>> points = new List<Point<int>> { new Point1D<int>(1), new Point1D<int>(2), new Point1D<int>(3)};
+            List<Point<int>> points = new List<Point<int>> { new Point<int>(1), new Point<int>(2), new Point<int>(3) };
             Position<int> position = new Position<int>(points);
 
             Assert.IsNotNull(position);
             Assert.IsTrue(position.Count() == 3);
-            Assert.AreEqual(position.Dimension, PointDimension.Point1D);
+            Assert.AreEqual(position.PositionType, PointDimension.Point1D);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof (NotNumericTypeException))]
-        public void CreatePosition_DefaultConstructor_PositionCreationFailed()
-        {
-            Position<string> position = new Position<string>();
-        }
 
         [TestMethod]
-        [ExpectedException(typeof (DifferentDimensionTypeInPositionException))]
+        [ExpectedException(typeof(DifferentDimensionTypeInPositionException))]
         public void CreatePosition_ParametrizedConstructorWithSecuenceOfPoints_CreationFailed()
         {
-            List<Point<int>> points = new List<Point<int>> {new Point1D<int>(1), new Point1D<int>(2)};
-            points.Add(new Point2D<int>(2,3));
+            List<Point<int>> points = new List<Point<int>> { new Point<int>(1), new Point<int>(2) };
+            points.Add(new Point<int>(2, 3));
 
             new Position<int>(points);
         }
 
-        [TestMethod]
-        public void Add_AddingPointToPosition_PositionAdded()
-        {
-            List<Point<int>> points = new List<Point<int>> { new Point1D<int>(1), new Point1D<int>(2) };
-            var position = new Position<int>(points);
-            position.Add(new Point1D<int>(3));
+        //[TestMethod]
+        //public void Add_AddingPointToPosition_PositionAdded()
+        //{
+        //    List<Point<int>> points = new List<Point<int>> { new Point<int>(1), new Point<int>(2) };
+        //    var position = new Position<int>(points);
+        //    position.Add(new Point<int>(3));
 
-            Assert.IsTrue(position.Count() == 3);         
-            Assert.IsTrue((position[2] as Point1D<int>).X == 3);
-        }
+        //    Assert.IsTrue(position.Count() == 3);
+        //    Assert.IsTrue((position[2] as Point<int>).X == 3);
+        //}
 
         [TestMethod]
         [ExpectedException(typeof(DifferentDimensionTypeInPositionException))]
         public void Add_AddingPointWithDifferentType_ExceptionThrown()
         {
-            List<Point<int>> points = new List<Point<int>> { new Point1D<int>(1), new Point1D<int>(2) };
+            List<Point<int>> points = new List<Point<int>> { new Point<int>(1), new Point<int>(2) };
             var position = new Position<int>(points);
-            position.Add(new Point2D<int>(3,4));
+            position.Add(new Point<int>(3, 4));
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Add_AddNullPoint_ExceptionThrown()
         {
             var position = new Position<int>(PointDimension.Point1D);
-            Point1D<int> point = null;
+            Point<int> point = null;
             position.Add(point);
         }
 
