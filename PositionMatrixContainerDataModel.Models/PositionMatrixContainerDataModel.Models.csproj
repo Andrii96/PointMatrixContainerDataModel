@@ -57,9 +57,6 @@
     <Compile Include="Models\Helpers\CodeHelper.cs" />
     <Compile Include="Models\Helpers\NumericType.cs" />
     <Compile Include="Models\Point\Point.cs" />
-    <Compile Include="Models\Point\Point1D.cs" />
-    <Compile Include="Models\Point\Point2D.cs" />
-    <Compile Include="Models\Point\Point3D.cs" />
     <Compile Include="Models\Point\PointDimension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

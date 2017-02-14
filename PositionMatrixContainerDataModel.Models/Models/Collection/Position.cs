@@ -8,23 +8,43 @@ using PositionMatrixContainerDataModel.Models.Models.Helpers;
 
 namespace PositionMatrixContainerDataModel.Models.Models.Collection
 {
+    /// <summary>
+    /// Represents collection of points
+    /// </summary>
+    /// <typeparam name="T"> Numeric type parameter</typeparam>
     public class Position<T> : List<Point<T>> where T : struct
     {
         #region Properties
 
+        /// <summary>
+        /// Defines position's type
+        /// </summary>
         public PointDimension PositionType { get; private set; }
 
         #endregion
 
         #region Constructor
-
+        /// <summary>
+        /// Instantiates position
+        /// </summary>
+        /// <param name="positionType">Position type</param>
         public Position(PointDimension positionType)
         {
             PositionType = positionType;
         }
 
-        public Position(IEnumerable<Point<T>> points)
+        /// <summary>
+        /// Instantiates position
+        /// </summary>
+        /// <param name="pointsCollection">Points collection</param>
+        public Position(IEnumerable<Point<T>> pointsCollection)
         {
+            var points = pointsCollection.ToList();
+
+            if (!points.Any())
+            {
+                throw new ArgumentException();
+            }
             this.AddRange(points);
             PositionType = points.First().PointType;
         }
@@ -33,6 +53,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         #region Methods
 
+        /// <summary>
+        /// Adds point to position
+        /// </summary>
+        /// <param name="point"> Point for adding</param>
         public new void Add(Point<T> point)
         {
             if (point == null)
@@ -45,8 +69,14 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
-        public new void AddRange(IEnumerable<Point<T>> points)
+        /// <summary>
+        /// Adds range of points to position
+        /// </summary>
+        /// <param name="pointsCollection">Points collection for adding</param>
+        public new void AddRange(IEnumerable<Point<T>> pointsCollection)
         {
+            var points = pointsCollection.ToList();
+
             if (ValidateSecuence(points))
             {
                 base.AddRange(points);
@@ -57,6 +87,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
+        /// <summary>
+        /// Inserts point at specified index
+        /// </summary>
+        /// <param name="index">Index number</param>
+        /// <param name="point">Point for inserting</param>
         public new void Insert(int index, Point<T> point)
         {
             if (ValidateSingleValue(point))
@@ -65,8 +100,15 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
-        public new void InsertRange(int index, IEnumerable<Point<T>> points)
+        /// <summary>
+        /// Inserts range of points at specified index
+        /// </summary>
+        /// <param name="index">Index </param>
+        /// <param name="pointsCollection">Range of points for inserting</param>
+        public new void InsertRange(int index, IEnumerable<Point<T>> pointsCollection)
         {
+            var points = pointsCollection.ToList();
+
             if (ValidateSecuence(points))
             {
                 base.InsertRange(index, points);
@@ -77,8 +119,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
-        public new Point<T> this[int index] => this[index];
-
+        /// <summary>
+        /// Represents position as string
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() => string.Join(",", this);
 
         #endregion
@@ -90,8 +134,9 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return PositionType == point.PointType;
         }
 
-        private bool CheckPointType(IEnumerable<Point<T>> points)
+        private bool CheckPointType(IEnumerable<Point<T>> pointsCollection)
         {
+            var points = pointsCollection.ToList();
             var pointType = points.FirstOrDefault()?.PointType;
             return points.All(p => p.PointType == pointType);
         }
@@ -105,8 +150,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return true;
         }
 
-        private bool ValidateSecuence(IEnumerable<Point<T>> points)
+        private bool ValidateSecuence(IEnumerable<Point<T>> pointsCollection)
         {
+            var points = pointsCollection.ToList();
+
             if (!CheckPointType(points))
             {
                 throw new DifferentDimensionTypeInPositionException();

@@ -10,14 +10,22 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
     public class Containers<T> : List<Container<T>> where T : struct
     {
         #region Constructor
-
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Containers() : base() { }
 
-        public Containers(IEnumerable<Container<T>> containers)
+        /// <summary>
+        /// Instantiates Containers with containers collection
+        /// </summary>
+        /// <param name="containerCollection">Containers collection</param>
+        public Containers(IEnumerable<Container<T>> containerCollection)
         {
-            if (containers == null)
+            var containers = containerCollection.ToList();
+
+            if (!containers.Any())
             {
-                throw new ArgumentNullException();
+                throw new ArgumentException();
             }
             this.AddRange(containers);
         }
@@ -25,7 +33,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Adds new container to containers
+        /// </summary>
+        /// <param name="container">Container for adding</param>
         public new void Add(Container<T> container)
         {
             if (container == null)
@@ -39,15 +50,25 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
-        public new void AddRange(IEnumerable<Container<T>> containersCollection)
+        /// <summary>
+        /// Adds range of containers to Containers collection
+        /// </summary>
+        /// <param name="containerCollection">Containers collection for adding</param>
+        public new void AddRange(IEnumerable<Container<T>> containerCollection)
         {
-            if (ValidateSequence(containersCollection))
+            var containers = containerCollection.ToList();
+            if (ValidateSequence(containers))
             {
-                base.AddRange(containersCollection);
+                base.AddRange(containers);
             }
                       
         }
 
+        /// <summary>
+        /// Inserts new container to Containers at specified position
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="container">Container for inserting</param>
         public new void Insert(int index, Container<T> container)
         {
             if (container == null)
@@ -62,16 +83,24 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                     
         }
 
-        public new void InsertRange(int index, IEnumerable<Container<T>> containersCollection)
+        /// <summary>
+        /// Inserts range of containers to Containers collection
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="containerCollection">Collection of containers for inserting</param>
+        public new void InsertRange(int index, IEnumerable<Container<T>> containerCollection)
         {
-            if (ValidateSequence(containersCollection))
+            var containers = containerCollection.ToList();
+            if (ValidateSequence(containers))
             {
-                base.InsertRange(index,containersCollection);
+                base.InsertRange(index,containers);
             }
         }
 
-        public new Container<T> this[int index] => this[index];
-
+        /// <summary>
+        /// String representation of containers
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(" ");
@@ -87,8 +116,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         #region Helpers
 
-        private bool CheckContainersContainerMatrixSize(IEnumerable<Container<T>> containers)
+        private bool CheckContainersContainerMatrixSize(IEnumerable<Container<T>> containerCollection)
         {
+            var containers = containerCollection.ToList();
+
             var positionNumberInMatrix = containers.FirstOrDefault()?
                                                  .First()
                                                  .Count();
@@ -123,12 +154,14 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return true;
         }
 
-        private bool CheckContainers(IEnumerable<Container<T>> containers)
+        private bool CheckContainers(IEnumerable<Container<T>> containerCollection)
         {
+            var containers = containerCollection.ToList();
+
             var matrixNumber = containers.FirstOrDefault()?.Count();
             if (matrixNumber != null)
             {
-                if (!containers.All(c => c.Count() == matrixNumber))
+                if (containers.Any(c => c.Count() != matrixNumber))
                 {
                     throw new DifferentContainersSizeException((int)matrixNumber);
                 }
@@ -165,13 +198,15 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return true;
         }
 
-        private bool CheckTypeOfEachIndexedMatrix(IEnumerable<Container<T>> containers)
+        private bool CheckTypeOfEachIndexedMatrix(IEnumerable<Container<T>> containerCollection)
         {
+            var containers = containerCollection.ToList();
             return containers.All(c => CheckTypeOfIndexedMatrix(c, containers.First()));
         }
 
-        private bool CheckNumberOfDataPointsIn3DMatrix(IEnumerable<Container<T>> containers)
+        private bool CheckNumberOfDataPointsIn3DMatrix(IEnumerable<Container<T>> containerCollection)
         {
+            var containers = containerCollection.ToList();
             return containers.All(c => CheckNumberOfDataPointsIn3DMatrix(c, containers.First()));
         }
 

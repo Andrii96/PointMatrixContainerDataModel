@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,18 +11,32 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
     public class Matrix<T> : List<Position<T>> where T : struct
     {
         #region Constructor
-
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Matrix() : base() {}
 
-        public Matrix(IEnumerable<Position<T>> positions)
+        /// <summary>
+        /// Instantiates matrix with position collection
+        /// </summary>
+        /// <param name="positionCollection"> Positinons</param>
+        public Matrix(IEnumerable<Position<T>> positionCollection)
         {
+            var positions = positionCollection.ToList();
+            if (!positions.Any())
+            {
+                throw new ArgumentException();
+            }
             this.AddRange(positions);            
         }
 
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Adds new position to matrix
+        /// </summary>
+        /// <param name="position">Position for adding</param>
         public new void Add(Position<T> position)
         {
             if (position == null)
@@ -35,8 +50,14 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }            
         }
 
-        public new void AddRange(IEnumerable<Position<T>> positions)
+        /// <summary>
+        /// Adds range of positions to matrix
+        /// </summary>
+        /// <param name="positionCollection">Position collection for adding</param>
+        public new void AddRange(IEnumerable<Position<T>> positionCollection)
         {
+            var positions = positionCollection.ToList();
+
             if (!CheckMatrixType(positions))
             {
                 throw new DifferentDimensionTypeInMatrixException();
@@ -48,6 +69,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
+        /// <summary>
+        /// Inserts position to matrix at specified position
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="position">Position for inserting</param>
         public new void Insert(int index, Position<T> position)
         {
             if (position == null)
@@ -60,8 +86,15 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }           
         }
 
-        public new void InsertRange(int index, IEnumerable<Position<T>> positions)
+        /// <summary>
+        /// Inserts range of positions at specified position
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="positionCollection">Position collection for inserting</param>
+        public new void InsertRange(int index, IEnumerable<Position<T>> positionCollection)
         {
+            var positions = positionCollection.ToList();
+
             if (!CheckMatrixType(positions))
             {
                 throw new DifferentDimensionTypeInMatrixException();
@@ -73,8 +106,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }           
         }
 
-        public new Position<T> this[int index] => this[index]; 
-
+        /// <summary>
+        /// String representation of Matrix
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder("");
@@ -90,8 +125,9 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         #region Helpers
 
-        private bool CheckMatrixType(IEnumerable<Position<T>> positions)
+        private bool CheckMatrixType(IEnumerable<Position<T>> positionCollection)
         {
+            var positions = positionCollection.ToList();
             var positionType = positions.FirstOrDefault()?.PositionType;
             return positions.All(p => p.PositionType == positionType);
         }
@@ -102,8 +138,9 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return Count == 0 || this.First().PositionType == positionType;
         }
 
-        private bool Check3DMatrixNumberPoint(IEnumerable<Position<T>> positions)
+        private bool Check3DMatrixNumberPoint(IEnumerable<Position<T>> positionCollection)
         {
+            var positions = positionCollection.ToList();
             var pointNumber = positions.FirstOrDefault()?.Count();
             return positions.All(p => p.Count() == pointNumber);
         }
@@ -127,8 +164,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return true;
         }
 
-        private bool ValidateSequence(IEnumerable<Position<T>> positions)
+        private bool ValidateSequence(IEnumerable<Position<T>> positionCollection)
         {
+            var positions = positionCollection.ToList();
+
             if (!CheckMatrixType(positions))
             {
                 throw new DifferentDimensionTypeInMatrixException();
@@ -138,11 +177,16 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
                 throw new DifferentDimensionTypeInPositionException();
             }
 
-            if (positions.First().PositionType == PointDimension.Point3D && !Check3DMatrixNumberPoint(positions.First()))
+            if (positions.First().PositionType == PointDimension.Point3D)
             {
-                throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
+                if (Count == 0 && !Check3DMatrixNumberPoint(positions))
+                {
+                    throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
+                }else if (Count > 0 && !Check3DMatrixNumberPoint(positions.First()))
+                {
+                    throw new DifferentNumberOfPointsInIndexed3DMatrixPositionsException();
+                }
             }
-
             return true;
         }
 

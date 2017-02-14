@@ -11,18 +11,33 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
     public class Container<T> : List<Matrix<T>> where T : struct
     {
         #region Constructor
-
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Container() : base() { }
 
-        public Container(IEnumerable<Matrix<T>> matrices)
+        /// <summary>
+        /// Instantiates container with matrix collection
+        /// </summary>
+        /// <param name="matrixCollection">Matrix collection</param>
+        public Container(IEnumerable<Matrix<T>> matrixCollection)
         {
+            var matrices = matrixCollection.ToList();
+
+            if (!matrices.Any())
+            {
+                throw new ArgumentException();
+            }
             this.AddRange(matrices);
         }
 
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Adds new matrix to container
+        /// </summary>
+        /// <param name="matrix">Matrix for adding</param>
         public new void Add(Matrix<T> matrix)
         {
             if (matrix == null)
@@ -35,8 +50,14 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }           
         }
 
-        public new void AddRange(IEnumerable<Matrix<T>> matrices)
+        /// <summary>
+        /// Adds range of matrices to container
+        /// </summary>
+        /// <param name="matrixCollection">matrix collection</param>
+        public new void AddRange(IEnumerable<Matrix<T>> matrixCollection)
         {
+            var matrices = matrixCollection.ToList();
+
             if (matrices == null)
             {
                 throw new ArgumentNullException();
@@ -53,6 +74,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
            
         }
 
+        /// <summary>
+        /// Inserts matrix to container at specified position
+        /// </summary>
+        /// <param name="index">Position number</param>
+        /// <param name="matrix">Matrix for inserting</param>
         public new void Insert(int index, Matrix<T> matrix)
         {
             if (matrix == null)
@@ -65,8 +91,15 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
-        public new void InsertRange(int index, IEnumerable<Matrix<T>> matrices)
+        /// <summary>
+        /// Inserts range of matrices to container at specified position
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="matrixCollection">Matrix collection</param>
+        public new void InsertRange(int index, IEnumerable<Matrix<T>> matrixCollection)
         {
+            var matrices = matrixCollection.ToList();
+
             if (!CheckContainer(matrices))
             {
                 throw new DifferentMatrixSizeException();
@@ -82,8 +115,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
         }
 
-        public new Matrix<T> this[int index] => this[index];
-
+        /// <summary>
+        /// String representation of container
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder("");
@@ -100,10 +135,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
 
         #region Helpers
 
-        private bool CheckContainer(IEnumerable<Matrix<T>> matrixes)
+        private bool CheckContainer(IEnumerable<Matrix<T>> matrixCollection)
         {
-            var matrixSize = matrixes.FirstOrDefault()?.Count();
-            return matrixes.All(m => m.Count() == matrixSize);
+            var matrices = matrixCollection.ToList();
+            var matrixSize = matrices.FirstOrDefault()?.Count();
+            return matrices.All(m => m.Count() == matrixSize);
         }
 
         private bool CheckContainer(Matrix<T> matrix)
@@ -121,8 +157,10 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             return true;
         }
 
-        private bool ValidateSecuence(IEnumerable<Matrix<T>> matrices)
+        private bool ValidateSecuence(IEnumerable<Matrix<T>> matrixCollection)
         {
+            var matrices = matrixCollection.ToList();
+
             if (!CheckContainer(matrices))
             {
                 throw new DifferentMatrixSizeException();

@@ -9,47 +9,46 @@ using PositionMatrixContainerDataModel.Models.Models.Collection;
 
 namespace PositionMatrixContainerDataModel.Models.Factory
 {
-    public static class PMCDataModelFactory<T> where T:struct
+    public static class PmcDataModelFactory<T> where T:struct
     {
         /// <summary>
         /// Creates position
         /// </summary>
-        /// <param name="points">Position type</param>
+        /// <param name="points">Points for creating position</param>
         /// <returns></returns>
-        public static Position<T> CreatePosition(Point<T>[] points)
+        public static Position<T> CreatePosition(IEnumerable<Point<T>> points)
         {
-            return new Position<T>(points.ToList());
+            return new Position<T>(points);
         }
 
         /// <summary>
         /// Creates matrix 
         /// </summary>
-        /// <param name="positions">Matrix position</param>
+        /// <param name="positions">Positions for creating matrix</param>
         /// <returns></returns>
-        public static Matrix<T> CreateMatrix(Position<T>[] positions)
+        public static Matrix<T> CreateMatrix(IEnumerable<Position<T>> positions)
         {
-            return new Matrix<T>(positions.ToList());
+            return new Matrix<T>(positions);
         }
 
         /// <summary>
         /// Creates container
         /// </summary>
-        /// <param name="matrices">Container matrix</param>
+        /// <param name="matrices">Matrices for creating container</param>
         /// <returns></returns>
-        public static Container<T> CreateContainer(Matrix<T>[] matrices)
+        public static Container<T> CreateContainer(IEnumerable<Matrix<T>> matrices)
         {
-            return new Container<T>(matrices.ToList());
+            return new Container<T>(matrices);
         }
 
         /// <summary>
         /// Creates containers collection
         /// </summary>
-        /// <param name="container">Container's container</param>
-        /// <param name="containerNumber">Amount of containers in collection</param>
+        /// <param name="containers">Container's collection for creating containers</param>
         /// <returns></returns>
-        public static Containers<T> CreateContainers(Container<T> container, int containerNumber)
+        public static Containers<T> CreateContainers(IEnumerable<Container<T>> containers )
         {
-            return new Containers<T>(Enumerable.Repeat(container, containerNumber));
+            return new Containers<T>(containers);
         }
 
     }
