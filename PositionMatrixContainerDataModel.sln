@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionMatrixContainerDataModel.Models", "PositionMatrixContainerDataModel.Models\PositionMatrixContainerDataModel.Models.csproj", "{AE795D75-6A0B-4C1B-B750-239A6118D8C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionMatrixContainer.Models", "PositionMatrixContainerDataModel.Models\PositionMatrixContainer.Models.csproj", "{AE795D75-6A0B-4C1B-B750-239A6118D8C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionMatrixContainerDataModel.ClientApplication", "PositionMatrixContainerDataModel.ClientApplication\PositionMatrixContainerDataModel.ClientApplication.csproj", "{6F6181B9-EEE8-4DC5-8ECB-FBCC6C196A25}"
 EndProject

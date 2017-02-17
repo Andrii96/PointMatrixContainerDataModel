@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using PositionMatrixContainer.Models.Helpers;
 
-namespace PositionMatrixContainerDataModel.Models.Models
+namespace PositionMatrixContainer.Models.Point
 {
    /// <summary>
    /// Represents point (1D,2D,3D)
@@ -14,9 +11,9 @@ namespace PositionMatrixContainerDataModel.Models.Models
     {
         #region Fields
 
-            private T? _x;
-            private T? _y;
-            private T? _z;
+            private readonly T? _x;
+            private readonly T? _y;
+            private readonly T? _z;
 
         #endregion
 
@@ -25,6 +22,10 @@ namespace PositionMatrixContainerDataModel.Models.Models
         public T? X => _x;
         public T? Y => _y;
         public T? Z => _z;
+        /// <summary>
+        /// Gets point's type
+        /// </summary>
+        public PointDimension PointType { get; private set; }
 
         #endregion
 
@@ -37,6 +38,7 @@ namespace PositionMatrixContainerDataModel.Models.Models
         public Point(T x)
         {
             _x = x;
+            PointType = PointDimension.Point1D;
         }
 
         /// <summary>
@@ -48,8 +50,8 @@ namespace PositionMatrixContainerDataModel.Models.Models
         {
             _x = x;
             _y = y;
+            PointType = PointDimension.Point2D;
         }
-
 
         /// <summary>
         /// Creates instance of 3D point
@@ -62,32 +64,7 @@ namespace PositionMatrixContainerDataModel.Models.Models
             _x = x;
             _y = y;
             _z = z;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets point's type
-        /// </summary>
-        public PointDimension PointType
-        {
-            get
-            {
-                if (_x != null && _y == null && _z == null)
-                {
-                    return PointDimension.Point1D;
-
-                }else if (_x != null && _y != null && _z == null)
-                {
-                    return PointDimension.Point2D;
-                }
-                else
-                {
-                    return PointDimension.Point3D;
-                }
-            }
+            PointType = PointDimension.Point3D;
         }
 
         #endregion
@@ -102,12 +79,12 @@ namespace PositionMatrixContainerDataModel.Models.Models
         {
             switch (PointType)
             {
-                    case PointDimension.Point1D:
-                        return $"{_x}";
-                    case PointDimension.Point2D:
-                        return $"({_x},{_y})";
-                    case PointDimension.Point3D:
-                        return $"({_x},{_y},{_z})";
+                case PointDimension.Point1D:
+                    return $"{_x}";
+                case PointDimension.Point2D:
+                    return $"({_x},{_y})";
+                case PointDimension.Point3D:
+                    return $"({_x},{_y},{_z})";
                 default:
                     return string.Empty;
             }

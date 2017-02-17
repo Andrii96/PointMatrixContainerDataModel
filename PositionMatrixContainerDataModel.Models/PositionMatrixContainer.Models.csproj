@@ -7,8 +7,8 @@
     <ProjectGuid>{AE795D75-6A0B-4C1B-B750-239A6118D8C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PositionMatrixContainerDataModel.Models</RootNamespace>
-    <AssemblyName>PositionMatrixContainerDataModel.Models</AssemblyName>
+    <RootNamespace>PositionMatrixContainer.Models</RootNamespace>
+    <AssemblyName>PositionMatrixContainer.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -49,15 +49,13 @@
     <Compile Include="Exceptions\DifferentMatrixSizeException.cs" />
     <Compile Include="Exceptions\DifferentNumberOfPointsInIndexed3DMatrixPositionsException.cs" />
     <Compile Include="Exceptions\NotNumericTypeException.cs" />
-    <Compile Include="Factory\PMCDataModelFactory.cs" />
-    <Compile Include="Models\Collection\Container.cs" />
-    <Compile Include="Models\Collection\Containers.cs" />
-    <Compile Include="Models\Collection\Matrix.cs" />
-    <Compile Include="Models\Collection\Position.cs" />
-    <Compile Include="Models\Helpers\CodeHelper.cs" />
-    <Compile Include="Models\Helpers\NumericType.cs" />
-    <Compile Include="Models\Point\Point.cs" />
-    <Compile Include="Models\Point\PointDimension.cs" />
+    <Compile Include="Collection\Container.cs" />
+    <Compile Include="Collection\Containers.cs" />
+    <Compile Include="Collection\Matrix.cs" />
+    <Compile Include="Collection\Position.cs" />
+    <Compile Include="Helpers\NumericType.cs" />
+    <Compile Include="Point\Point.cs" />
+    <Compile Include="Point\PointDimension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

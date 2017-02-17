@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PositionMatrixContainerDataModel.Models.Exceptions
+namespace PositionMatrixContainer.Models.Exceptions
 {
     [Serializable]
     public class DifferentNumberOfPointsInIndexed3DMatrixPositionsException:ApplicationException
     {
         #region Properties
+
         public int PointsNumber { get; set; }
+        
         #endregion
 
         #region Constructor

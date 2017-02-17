@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PositionMatrixContainerDataModel.Models.Exceptions;
-using PositionMatrixContainerDataModel.Models.Factory;
-using PositionMatrixContainerDataModel.Models.Models;
-using PositionMatrixContainerDataModel.Models.Models.Collection;
+using PositionMatrixContainer.Models.Exceptions;
+using PositionMatrixContainer.Models.Collection;
+using PositionMatrixContainer.Models.Point;
 
 namespace PositionMatrixContainerDataModel.Tests
 {

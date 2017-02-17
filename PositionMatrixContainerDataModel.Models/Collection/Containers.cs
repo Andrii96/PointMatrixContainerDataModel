@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PositionMatrixContainerDataModel.Models.Exceptions;
+using PositionMatrixContainer.Models.Exceptions;
 using System;
+using PositionMatrixContainer.Models.Point;
 
-namespace PositionMatrixContainerDataModel.Models.Models.Collection
+namespace PositionMatrixContainer.Models.Collection
 {
     public class Containers<T> : List<Container<T>> where T : struct
     {
@@ -60,8 +61,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             if (ValidateSequence(containers))
             {
                 base.AddRange(containers);
-            }
-                      
+            }                      
         }
 
         /// <summary>
@@ -91,6 +91,7 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
         public new void InsertRange(int index, IEnumerable<Container<T>> containerCollection)
         {
             var containers = containerCollection.ToList();
+
             if (ValidateSequence(containers))
             {
                 base.InsertRange(index,containers);
@@ -163,10 +164,11 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             {
                 if (containers.Any(c => c.Count() != matrixNumber))
                 {
-                    throw new DifferentContainersSizeException((int)matrixNumber);
+                    throw new DifferentContainersSizeException((int) matrixNumber);
                 }
-            }
 
+                return true;
+            }
             return true;
         }
 

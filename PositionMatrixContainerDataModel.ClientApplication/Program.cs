@@ -1,11 +1,9 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using PositionMatrixContainerDataModel.ClientApplication.Helpers;
-using PositionMatrixContainerDataModel.Models.Factory;
-using PositionMatrixContainerDataModel.Models.Models;
-using PositionMatrixContainerDataModel.Models.Models.Collection;
+using PositionMatrixContainer.Models.Collection;
+using PositionMatrixContainer.Models.Point;
 
 
 namespace PositionMatrixContainerDataModel.ClientApplication
@@ -27,35 +25,35 @@ namespace PositionMatrixContainerDataModel.ClientApplication
         private static void Test1()
         {
             //Creating empty position
-            var XYemptyPosition =new Position<decimal>(PointDimension.Point2D);
+            var xyEmptyPosition =new Position<decimal>(PointDimension.Point2D);
 
             ////Creating positions with 2D points
-            var XYposition1 = PmcDataModelFactory<decimal>.CreatePosition(PMCRandom<decimal>.GetRandomPoints(PointDimension.Point2D, 50));
-            var XYposition2 = PmcDataModelFactory<decimal>.CreatePosition(PMCRandom<decimal>.GetRandomPoints(PointDimension.Point2D, 200));
+            var xyPosition1 = new Position<decimal>(PmcRandom<decimal>.GetRandomPoints(PointDimension.Point2D, 50));
+            var xyPosition2 = new Position<decimal>(PmcRandom<decimal>.GetRandomPoints(PointDimension.Point2D, 200));
 
             ////Creating matrix
-            var matrix1 = new Matrix<decimal> {XYposition1, XYposition2};
+            var matrix1 = new Matrix<decimal> { xyPosition1, xyPosition2 };
             //Filling matrix with empty position
             for (int i = 0; i < 98; i++)
             {
-                matrix1.Add(XYemptyPosition);
+                matrix1.Add(xyEmptyPosition);
             }
 
-            var XemptyPosition = new Position<decimal>(PointDimension.Point1D);
-            var Xposition1 = PmcDataModelFactory<decimal>.CreatePosition(PMCRandom<decimal>.GetRandomPoints(PointDimension.Point1D, 40));
-            var Xposition2 = PmcDataModelFactory<decimal>.CreatePosition(PMCRandom<decimal>.GetRandomPoints(PointDimension.Point1D, 30));
-            var matrix2 = new Matrix<decimal> { Xposition1, Xposition2 };
+            var xEmptyPosition = new Position<decimal>(PointDimension.Point1D);
+            var xPosition1 = new Position<decimal>(PmcRandom<decimal>.GetRandomPoints(PointDimension.Point1D, 40));
+            var xPosition2 = new Position<decimal>(PmcRandom<decimal>.GetRandomPoints(PointDimension.Point1D, 30));
+            var matrix2 = new Matrix<decimal> { xPosition1, xPosition2 };
 
             for (int i = 0; i < 98; i++)
             {
-                matrix2.Add(XemptyPosition);
+                matrix2.Add(xEmptyPosition);
             }
             ////Creating container
             var container = new Container<decimal> {matrix1, matrix2};
 
             ////Creating containers collection
             var containersCollection = Enumerable.Repeat(container, 3);
-            var containers = PmcDataModelFactory<decimal>.CreateContainers(containersCollection);
+            var containers = new Containers<decimal>(containersCollection);
             Console.WriteLine(containers.ToString());
         }
 

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using PositionMatrixContainerDataModel.Models.Exceptions;
+using PositionMatrixContainer.Models.Exceptions;
+using PositionMatrixContainer.Models.Point;
 
-namespace PositionMatrixContainerDataModel.Models.Models.Collection
+namespace PositionMatrixContainer.Models.Collection
 {
     public class Matrix<T> : List<Position<T>> where T : struct
     {

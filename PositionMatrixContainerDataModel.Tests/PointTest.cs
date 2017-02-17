@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PositionMatrixContainerDataModel.Models.Exceptions;
-using PositionMatrixContainerDataModel.Models.Models;
+using PositionMatrixContainer.Models.Exceptions;
+using PositionMatrixContainer.Models.Point;
 
 namespace PositionMatrixContainerDataModel.Tests
 {

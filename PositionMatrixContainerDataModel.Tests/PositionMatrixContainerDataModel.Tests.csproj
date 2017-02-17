@@ -60,9 +60,9 @@
     <Compile Include="ContainersTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PositionMatrixContainerDataModel.Models\PositionMatrixContainerDataModel.Models.csproj">
+    <ProjectReference Include="..\PositionMatrixContainerDataModel.Models\PositionMatrixContainer.Models.csproj">
       <Project>{ae795d75-6a0b-4c1b-b750-239a6118d8c5}</Project>
-      <Name>PositionMatrixContainerDataModel.Models</Name>
+      <Name>PositionMatrixContainer.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

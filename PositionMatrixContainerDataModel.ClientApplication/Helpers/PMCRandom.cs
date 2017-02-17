@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PositionMatrixContainerDataModel.Models.Models;
-using PositionMatrixContainerDataModel.Models.Models.Collection;
+using PositionMatrixContainer.Models.Point;
 
 namespace PositionMatrixContainerDataModel.ClientApplication.Helpers
 {
-    public static class PMCRandom<T> where T:struct
+    public static class PmcRandom<T> where T:struct
     {
         public static IEnumerable<Point<T>>  GetRandomPoints(PointDimension pointType, int count)
         {
@@ -28,9 +24,7 @@ namespace PositionMatrixContainerDataModel.ClientApplication.Helpers
                         points.Add(new Point<T>((dynamic)random.Next(), (dynamic)random.Next(), (dynamic)random.Next()));
                         break;
                 }
-
             }
-
             return points;
         }
 

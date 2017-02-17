@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using PositionMatrixContainerDataModel.Models.Models;
+using PositionMatrixContainer.Models.Point;
 
-namespace PositionMatrixContainerDataModel.Models.Exceptions
+namespace PositionMatrixContainer.Models.Exceptions
 {
     [Serializable]
     public class DifferentDimensionTypeInMatrixException:ApplicationException

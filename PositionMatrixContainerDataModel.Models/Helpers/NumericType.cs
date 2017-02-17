@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PositionMatrixContainerDataModel.Models.Exceptions;
+using PositionMatrixContainer.Models.Exceptions;
 
-namespace PositionMatrixContainerDataModel.Models.Models
+namespace PositionMatrixContainer.Models.Helpers
 {
     public abstract class NumericType<T>
     {
         #region Constructor
+
         protected NumericType()
         {
             if (!CheckType(typeof(T)))
@@ -17,6 +15,7 @@ namespace PositionMatrixContainerDataModel.Models.Models
                 throw new NotNumericTypeException(typeof(T));
             }
         }
+
         #endregion
 
         #region Helpers

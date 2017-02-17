@@ -1,4 +1,4 @@
-﻿namespace PositionMatrixContainerDataModel.Models.Models
+﻿namespace PositionMatrixContainer.Models.Point
 {
     public enum PointDimension
     {

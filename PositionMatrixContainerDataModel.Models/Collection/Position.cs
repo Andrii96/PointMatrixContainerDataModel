@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PositionMatrixContainerDataModel.Models.Exceptions;
-using PositionMatrixContainerDataModel.Models.Models.Helpers;
+using PositionMatrixContainer.Models.Point;
+using PositionMatrixContainer.Models.Exceptions;
 
-namespace PositionMatrixContainerDataModel.Models.Models.Collection
+namespace PositionMatrixContainer.Models.Collection
 {
     /// <summary>
     /// Represents collection of points
@@ -160,7 +158,6 @@ namespace PositionMatrixContainerDataModel.Models.Models.Collection
             }
             return Count == 0 || PositionType == points.First().PointType;
         }
-
 
         #endregion
     }
