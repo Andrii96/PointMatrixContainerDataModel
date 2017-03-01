@@ -1,0 +1,57 @@
+﻿<Window x:Class="PositionMatrixContainer.UI.View.ContainerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PositionMatrixContainer.UI.ViewModel"
+        mc:Ignorable="d"
+       
+        Title="MatrixEnteringView" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    
+    <Grid Margin="12">
+        <StackPanel Orientation="Vertical">
+            <StackPanel  HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="Container "></TextBlock>
+                <TextBlock Text="{Binding ContainerNumber}"></TextBlock>
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ListView Height="300" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"   ItemsSource="{Binding Matrices}" Width="Auto" HorizontalAlignment="Center" Margin="0,8,8,8" Grid.Column="1" Grid.Row="0">
+                   
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="8" BorderThickness="2" BorderBrush="Black">
+                                <StackPanel Orientation="Vertical" Margin="8" Width="175" Height="120">
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="Matrix"></TextBlock>
+                                        <TextBlock Text="{Binding Number}"></TextBlock>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Vertical" Margin="0,8,0,0">
+                                        <CheckBox IsEnabled="{Binding  IsPoint1DTypeEnabled}" IsChecked="{Binding Point1D}"  Margin="8,0,0,0" Content="Point 1D"></CheckBox>
+                                        <CheckBox IsEnabled="{Binding  IsPoint2DTypeEnabled}" IsChecked="{Binding Point2D}"   Margin="8,0,0,0" Content="Point 2D"></CheckBox>
+                                        <CheckBox IsEnabled="{Binding  IsPoint3DTypeEnabled}" IsChecked="{Binding Point3D}"    Margin="8,0,0,0" Content="Point 3D"></CheckBox>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <ComboBox ItemsSource="{Binding Positions}" Width="100" Height="24"></ComboBox>
+                                        <Button Command="{Binding AddNewPointCommand}" Content="Add point" Margin="8,0,0,0" Width="65" Height="24"></Button>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </Grid>
+            <Button Content="Add" Command="{Binding AddNewContainerCommand}" Height="24" Width="35" Margin="0,8,-200,0"></Button>
+            
+            
+        </StackPanel>
+
+    </Grid>
+</Window>

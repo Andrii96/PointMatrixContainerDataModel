@@ -1,0 +1,54 @@
+﻿<Window x:Class="PositionMatrixContainer.UI.View.ContainersView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PositionMatrixContainer.UI.View"
+        mc:Ignorable="d"
+        Title="Containers" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <Grid Margin="12">
+        <StackPanel Orientation="Vertical" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="Data type" Width="120"></TextBlock>
+                <ComboBox IsEnabled="{Binding IsSelectionEnabled}" SelectedItem="{Binding SelectedType, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AvailableDataTypes}" Margin="8,0,0,0" Height="24" Width="129"  VerticalContentAlignment="Center"></ComboBox>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0" >
+                <TextBlock VerticalAlignment="Center" Text="Amount of matrices" Width="120"></TextBlock>
+                <TextBox Margin="8,0,8,0" Height="24" VerticalContentAlignment="Center"  Text="{Binding AmountOfMatricesInContainer, UpdateSourceTrigger=PropertyChanged}" Width="131"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBlock Text="Amount of positions" VerticalAlignment="Center" Width="120"></TextBlock>
+                <TextBox Margin="8,0,8,0" Text="{Binding AmountOfPositions, UpdateSourceTrigger=PropertyChanged}" Height="24" Width="130"></TextBox>
+                <Button Command="{Binding AddContainerCommand}" ToolTip="New Container" Content="+" Width="25" Height="24" Margin="8,0,8,0"></Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBlock Text="Amount of Containers" VerticalAlignment="Center" Height="24" Width="120"></TextBlock>
+                <TextBlock Margin="8,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding AmountOfContainers}" Height="24" Width="50"></TextBlock>
+            </StackPanel>
+            <!--<Grid x:Name="Containers" Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    
+                </Grid.ColumnDefinitions>
+            </Grid>-->
+
+        </StackPanel>
+    </Grid>
+</Window>

@@ -25,7 +25,7 @@ namespace PositionMatrixContainerDataModel.ClientApplication
         private static void Test1()
         {
             //Creating empty position
-            var xyEmptyPosition =new Position<decimal>(PointDimension.Point2D);
+            var xyEmptyPosition = new Position<decimal>(PointDimension.Point2D);
 
             ////Creating positions with 2D points
             var xyPosition1 = new Position<decimal>(PmcRandom<decimal>.GetRandomPoints(PointDimension.Point2D, 50));
